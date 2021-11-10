@@ -46,25 +46,38 @@ class Translator:
         lang_code = single_detection(self.text, api_key='9a84cb3518b95093f719b8bf4b46359c')
         lang = list(self.langs_dict.keys())[list(self.langs_dict.values()).index(lang_code)]
         return lang
+    
+    def detect_lang_code(self) -> str:
+        """
+        Returns the language code detected in the source text passed to the Translator class.
+        """
+        lang_code = single_detection(self.text, api_key='9a84cb3518b95093f719b8bf4b46359c')
+        return lang_code
 
     def translate(self) -> str:
         """
         Translates the source text into the target language and returns the final translated text.
         """
-        final_text = GoogleTranslator(self.source, self.target).translate(self.text)
+        if self.source == 'auto':
+            final_text = GoogleTranslator(self.detect_lang_code(), self.target).translate(self.text)
+        else:
+            final_text = GoogleTranslator(self.source, self.target).translate(self.text)
         return final_text
 
 
 if __name__ == "__main__":
-    translator = Translator("Thanks for using my translator. This is a template message. Please see documentation for usage.", 'es')
+    # translator = Translator("Thanks for using my translator. This is a template message. Please see documentation for usage.", 'es')
 
-    print(translator.get_text())
-    print("Source language: " + translator.get_source())
-    print("Detected language: " + translator.detect_lang())
-    print("Target language: " + translator.get_target())
-    print("Translation: " + translator.translate())
+    # print(translator.get_text())
+    # print("Source language: " + translator.get_source())
+    # print("Detected language: " + translator.detect_lang())
+    # print("Target language: " + translator.get_target())
+    # print("Translation: " + translator.translate())
 
-    print("Supported languages:")
-    langs = translator.get_lang_codes()
-    for lang in langs:
-        print(lang + ": " + langs[lang])
+    # print("Supported languages:")
+    # langs = translator.get_lang_codes()
+    # for lang in langs:
+    #     print(lang + ": " + langs[lang])
+    new = Translator("Hello", "es")
+    this_is = new.translate()
+    print(this_is)
